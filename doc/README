@@ -1,0 +1,48 @@
+swt = Text detection based on Stroke Width Transform
+
+=====
+
+This project extracts text from image for recognition by 3rd-party OCR.
+
+Project Layout
+--------------
+- src/
+    - contains all of the source files for the main library
+- include/
+    - header files for the library
+- test/
+    - test programs
+
+Requirements
+------------
+- gnim libs
+- papyrus lib
+- Boost::filesystem
+- FFMPEG
+- OpenCV
+- Tesseract OCR
+- compiler with C++11 support
+    - clang on OS/X
+    - gcc >= 4.7
+
+Design
+------------
+
+Basically, the library supports the extraction of text from natural scenes,
+including text at an angle.
+
+The stroke width transform uses an edge image of the text to compute a stroke-width
+value for every pixel on or inside a contour.  Said values should be smoothly varying
+and nearly constant within a text component.  We find and label such components by a
+flood-filling algorithm. Components that are too small or large are rejected.   
+
+Then, the components are filtered and merged to find likely characters and words.
+We find the minimal bounding box around each candidate word, which is not necessarily
+horizontal; given the orientation angle of the box, we rotate the candidate word to
+make it horizontal.
+
+Each horizontal candidate word is sent to Tesseract for recognition.
+
+Most of the processing is done by OpenCV functions on OpenCV images and other
+objects.  However, this core processing is encapsulated` into Gracenote-format objects
+operating on Gracenote-format images.

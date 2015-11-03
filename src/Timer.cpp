@@ -1,0 +1,39 @@
+//
+// Timer.cpp 
+//
+
+#include "Timer.h"
+#include <stdlib.h>
+
+/////////////////////////////////////////////////////////////////
+// public methods
+/////////////////////////////////////////////////////////////////
+
+Timer::Timer()
+{
+  Start();
+}
+
+Timer::~Timer()
+{
+
+}
+
+void Timer::Start()
+{
+  gettimeofday(&start, NULL);
+}
+
+double Timer::Stop()
+{
+  gettimeofday(&end, NULL);
+  double elapsedTime = (double)(end.tv_sec-start.tv_sec)+
+    (double)(end.tv_usec-start.tv_usec)/1000000.0;
+  return elapsedTime;
+}
+
+/////////////////////////////////////////////////////////////////
+// private methods
+/////////////////////////////////////////////////////////////////
+
+
